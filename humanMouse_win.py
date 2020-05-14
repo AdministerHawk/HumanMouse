@@ -22,17 +22,18 @@ from keras.models import load_model
 
 
 def active_target_app():
-    # 获取当前屏幕分辨率
+    # To get the screen resolution
     screenWidth, screenHeight = gui.size()
     
-    # 获取当前鼠标位置
+    # Get current mouse position
     currentMouseX, currentMouseY = gui.position()
     
-    # 2秒钟鼠标移动坐标为100,100位置  绝对移动
+    # To move the moues pointer to the position(200,180) within 2 seconds
     gui.moveTo(200, 180,2)
     
-    # 鼠标左击一次
+    # Mouse Click once
     gui.click()
+
 
 
 
@@ -56,40 +57,33 @@ def face_detect_demo(img):
     eye_imgs = []
     for (x, y, w, h) in faces:
         cv.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
-        print("x is %s y is %s, w is %s h is %s"%(x, y, w, h))
         roi_grey = grey[y:y+int(h*2/3), x:x+w]
         roi_img = img[y:y+int(h*2/3), x:x+w]
-        # cv.imshow("roi", roi_img)
         eyes = eyes_detector.detectMultiScale(roi_grey, 1.1, 8)
-        # rl = []
         for (ex, ey, ew, eh) in eyes:
             print("******************eye detected")
             eye = roi_img[ey:ey+eh, ex:ex+ew]
-            print(type(eye))
-            # get_eye = get_img(eye)
             rs_img = cv.resize(eye, (56,56))
             rh_img = np.reshape(rs_img, (3,56,56))
             eye_imgs.append(rh_img)
-            cv.rectangle(roi_img, (ex, ey), (ex+ew, ey+eh), (255, 0, 0), 2)
     eye_imgs = np.array(eye_imgs)
-    # ret = prediction(eye_imgs)
     cv.imshow("result", img)
-    # cv.moveWindow("result", 600, 350)
+    cv.moveWindow("result", 1000, 450)
     return eye_imgs
 
 
 def take_action(pred):
     if pred == 0:
-        gui.scroll(2)
+        gui.scroll(30)
         print("Down")
     if pred == 2:
-        gui.scroll(-2)
+        gui.scroll(-30)
         print("Up")
     
-eye_model = load_model("NN/CNN006460985.model")
+eye_model = load_model("NN/CNN.model")
 
-face_detector = cv.CascadeClassifier("/home/hawk/Downloads/opencv_data/data/haarcascades/haarcascade_frontalface_alt_tree.xml")
-eyes_detector = cv.CascadeClassifier("/home/hawk/Downloads/opencv_data/data/haarcascades/haarcascade_eye.xml")
+face_detector = cv.CascadeClassifier("Detection/haarcascade_frontalface_alt_tree.xml")
+eyes_detector = cv.CascadeClassifier("Detection//haarcascade_eye.xml")
 
 def main():
     active_target_app()
@@ -99,7 +93,7 @@ def main():
         ret, frame = capture.read()
         frame = cv.flip(frame, 1)
         eye_images = face_detect_demo(frame)
-        print(eye_images.ndim)
+        # print(eye_images.ndim)
         # print(eye_images==[])
         pred = prediction(eye_images)
         print("The prediction is :", pred)
