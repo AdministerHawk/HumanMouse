@@ -86,10 +86,10 @@ def take_action(pred):
         gui.scroll(-2)
         print("Up")
     
-eye_model = load_model("../NN/CNN006460985.model")
+eye_model = load_model("../NN/CNN.model")
 
-face_detector = cv.CascadeClassifier("/home/hawk/Downloads/opencv_data/data/haarcascades/haarcascade_frontalface_alt_tree.xml")
-eyes_detector = cv.CascadeClassifier("/home/hawk/Downloads/opencv_data/data/haarcascades/haarcascade_eye.xml")
+face_detector = cv.CascadeClassifier("../Detection/haarcascade_frontalface_alt_tree.xml")
+eyes_detector = cv.CascadeClassifier("../Detection//haarcascade_eye.xml")
 
 def main():
     active_target_app()
