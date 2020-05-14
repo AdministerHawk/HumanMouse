@@ -17,3 +17,6 @@ The resources needed are:
 	2. TensorFlow 1.5.2
 	3. Keras 2.3.1
 	4. PyAutoGUI 0.9.48
+
+If you have any question, please do not be hesitate to contact me.
+My email: k.e.hawk@foxmail.com
